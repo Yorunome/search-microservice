@@ -1,0 +1,93 @@
+<schema name="default-config" version="1.6">
+  <uniqueKey>id</uniqueKey>
+  <fieldType name="_nest_path_" class="solr.NestPathField" maxCharsForDocValues="-1" omitNorms="true" omitTermFreqAndPositions="true" stored="false"/>
+  <fieldType name="ancestor_path" class="solr.TextField">
+    <analyzer type="index">
+      <tokenizer class="solr.KeywordTokenizerFactory"/>
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/"/>
+    </analyzer>
+  </fieldType>
+  <fieldType name="binary" class="solr.BinaryField"/>
+  <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+  <fieldType name="booleans" class="solr.BoolField" sortMissingLast="true" multiValued="true"/>
+  <fieldType name="descendent_path" class="solr.TextField">
+    <analyzer type="index">
+      <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/"/>
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.KeywordTokenizerFactory"/>
+    </analyzer>
+  </fieldType>
+  <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
+    <analyzer>
+      <tokenizer class="solr.KeywordTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+  </fieldType>
+  <fieldType name="pdate" class="solr.DatePointField" docValues="true"/>
+  <fieldType name="pdates" class="solr.DatePointField" docValues="true" multiValued="true"/>
+  <fieldType name="pdouble" class="solr.DoublePointField" docValues="true"/>
+  <fieldType name="pdoubles" class="solr.DoublePointField" docValues="true" multiValued="true"/>
+  <fieldType name="pfloat" class="solr.FloatPointField" docValues="true"/>
+  <fieldType name="pfloats" class="solr.FloatPointField" docValues="true" multiValued="true"/>
+  <fieldType name="phonetic_en" class="solr.TextField" indexed="true" stored="false">
+    <analyzer>
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.DoubleMetaphoneFilterFactory" inject="false"/>
+    </analyzer>
+  </fieldType>
+  <fieldType name="text_general_ngram" class="solr.TextField" positionIncrementGap="100">
+       <analyzer type="index">
+           <tokenizer class="solr.StandardTokenizerFactory"/>
+           <filter class="solr.LowerCaseFilterFactory"/>
+           <filter class="solr.PatternReplaceFilterFactory" pattern="&amp;" replacement="and"/>
+           <filter class="solr.PatternReplaceFilterFactory" pattern="[^\dA-Za-z ]" replacement=""/>
+           <filter class="solr.EdgeNGramFilterFactory" maxGramSize="20" minGramSize="1"/>
+       </analyzer>
+       <analyzer type="query">
+           <tokenizer class="solr.StandardTokenizerFactory"/>
+           <filter class="solr.LowerCaseFilterFactory"/>
+           <filter class="solr.PatternReplaceFilterFactory" pattern="&amp;" replacement="and"/>
+           <filter class="solr.PatternReplaceFilterFactory" pattern="[^\dA-Za-z ]" replacement=""/>
+       </analyzer>
+   </fieldType>
+  <fieldType name="pint" class="solr.IntPointField" docValues="true"/>
+  <fieldType name="pints" class="solr.IntPointField" docValues="true" multiValued="true"/>
+  <fieldType name="plong" class="solr.LongPointField" docValues="true"/>
+  <fieldType name="plongs" class="solr.LongPointField" docValues="true" multiValued="true"/>
+  <fieldType name="point" class="solr.PointType" subFieldSuffix="_d" dimension="2"/>
+  <fieldType name="random" class="solr.RandomSortField" indexed="true"/>
+  <fieldType name="string" class="solr.StrField" sortMissingLast="true" docValues="true"/>
+  <fieldType name="strings" class="solr.StrField" sortMissingLast="true" docValues="true" multiValued="true"/>
+  <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100" multiValued="true">
+    <analyzer type="index">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+    <analyzer type="query">
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+    </analyzer>
+  </fieldType>
+  <field name="_nest_path_" type="_nest_path_"/>
+  <field name="_root_" type="string" docValues="false" indexed="true" stored="false"/>
+  <field name="_text_" type="text_general" multiValued="true" indexed="true" stored="false"/>
+  <field name="_version_" type="plong" indexed="false" stored="false"/>
+  <field name="cid" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
+  <field name="pdesc" type="text_general_ngram" multiValued="false" indexed="true" stored="true"/>
+  <field name="pid" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="pname" type="text_general_ngram" multiValued="false" indexed="true" stored="true"/>
+  <field name="prat" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="pusp" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="pattr" type="text_general" multiValued="true" indexed="true" stored="true" docValues="false"/>
+
+  <field name="autoComplete" type="text_general_ngram" indexed="true" stored="false" multiValued="true"/>
+    <copyField source="pusp" dest="autoComplete" />
+    <copyField source="pdesc" dest="autoComplete" />
+    <copyField source="pname" dest="autoComplete" />
+
+
+</schema>
