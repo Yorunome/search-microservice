@@ -12,7 +12,7 @@ import org.springframework.data.solr.core.mapping.SolrDocument;
 import java.io.Serializable;
 import java.util.List;
 
-@SolrDocument(solrCoreName = "Products_ver_5")
+@SolrDocument(solrCoreName = "Products_ver_8")
 @Getter
 @ToString
 @Setter
@@ -20,41 +20,41 @@ public class Product implements Serializable{
 
     @Id
 
-    @Indexed(name = "pid", type = "string")
+    @Indexed(name = "Product ID", type = "string")
 
     private String productId;
 
-    @Indexed(name = "pname", type = "string")
+    @Indexed(name = "Name", type = "string")
 
     private String productName;
 
-    @Indexed(name = "pdesc", type = "string")
+    @Indexed(name = "Description", type = "string")
 
     private String productDescription;
 
-    @Indexed(name = "pattr", type = "string")
+    @Indexed(name = "Attributes", type = "string")
 
     private List <String> productAttribute;
 
-    @Indexed(name = "prat", type = "double")
+    @Indexed(name = "Rating", type = "double")
 
     private String productRating;
 
-    @Indexed(name = "pusp", type = "string")
+    @Indexed(name = "USP", type = "string")
 
     private String productUsp;
 
-    @Indexed(name = "cid", type = "string")
+    @Indexed(name = "Category ID", type = "string")
     private String categoryId;
 
     @Indexed(name = "url", type = "string")
     private String imageUrl;
 
-//    @Indexed(name = "color", type = "string")
-//    private String color;
-//
-//    @Indexed(name = "Connectivity", type = "string")
-//    private String Connectivity;
+    @Indexed(name = "Price", type = "double")
+    private Double price;
+
+    @Indexed(name = "Weight", type = "double")
+    private Double weighted;
 
 
 }

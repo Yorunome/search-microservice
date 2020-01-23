@@ -25,5 +25,9 @@ public class ProductDTO {
 
     private  Map<String, String> productAttribute;
 
+    private Double price;
+
+    private Double weighted;
+
 
 }
