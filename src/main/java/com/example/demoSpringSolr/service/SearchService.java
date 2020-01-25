@@ -9,7 +9,7 @@ public interface SearchService {
 
     public Page<Product> searchProducts(String term);
     public void updateProduct(String productId, Double price);
-    public List<Product> findOrder(String productDesc);
+    public List<Product> findProduct(String productDesc);
     public void deleteProduct(String productid);
     public Page<Product> filterRatings(Double rating);
     public Page<Product> filterAttributes(String attribute);

@@ -57,10 +57,10 @@ public class SearchController {
 
     @PostMapping("/product/desc/")
 
-    public List <Product> findOrder(@RequestBody SearchDTO searchDTO){
+    public List <Product> findProduct(@RequestBody SearchDTO searchDTO){
 
         String searchTerm = searchDTO.getTerm();
-        return searchService.findOrder(searchTerm);
+        return searchService.findProduct(searchTerm);
 
     }
 

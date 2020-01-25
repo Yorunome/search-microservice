@@ -50,7 +50,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<Product> findOrder(String productDesc) {
+    public List<Product> findProduct(String productDesc) {
         return solrProductRepository.findByProductDescription(productDesc , Sort.by(Sort.Direction.DESC , "Weight"));
     }
 

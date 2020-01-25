@@ -22,7 +22,8 @@ public interface SolrProductRepository extends SolrCrudRepository<Product, Strin
 
 
 
-    @Query("autoComplete:*?0*")
+    //@Query("autoComplete:*?0*")
+    @Query("Name:*?0* OR Attributes:*?0* OR USP:*?0* OR CategoryID:*?0*")
     List<Product> findByProductDescription(String searchTerm , Sort sort);
 
 //    @Query("pdesc:*?0* OR pattr:*?0* OR pname:*?0*")
