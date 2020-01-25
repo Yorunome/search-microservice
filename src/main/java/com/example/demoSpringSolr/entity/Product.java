@@ -12,15 +12,14 @@ import org.springframework.data.solr.core.mapping.SolrDocument;
 import java.io.Serializable;
 import java.util.List;
 
-@SolrDocument(solrCoreName = "Products_ver_8")
+@SolrDocument(solrCoreName = "Products_ver_11")
 @Getter
 @ToString
 @Setter
 public class Product implements Serializable{
 
     @Id
-
-    @Indexed(name = "Product ID", type = "string")
+    @Indexed(name = "id", type = "string")
 
     private String productId;
 
@@ -38,14 +37,14 @@ public class Product implements Serializable{
 
     @Indexed(name = "Rating", type = "double")
 
-    private String productRating;
+    private Double productRating;
 
     @Indexed(name = "USP", type = "string")
 
     private String productUsp;
 
-    @Indexed(name = "Category ID", type = "string")
-    private String categoryId;
+    @Indexed(name = "CategoryID", type = "string")
+    private String categoryName;
 
     @Indexed(name = "url", type = "string")
     private String imageUrl;

@@ -15,11 +15,11 @@ public class ProductDTO {
 
     private String productDescription;
 
-    private String productRating;
+    private Double productRating;
 
     private String productUsp;
 
-    private String categoryId;
+    private String categoryName;
 
     private String imageUrl;
 
