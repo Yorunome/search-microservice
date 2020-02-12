@@ -29,5 +29,7 @@ public class ProductDTO {
 
     private Double weighted;
 
+    private String merchantId;
+
 
 }

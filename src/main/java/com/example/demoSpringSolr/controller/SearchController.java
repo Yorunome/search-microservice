@@ -2,10 +2,8 @@ package com.example.demoSpringSolr.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.example.demoSpringSolr.dto.PriceUpdateDTO;
-import com.example.demoSpringSolr.dto.ProductDTO;
 import com.example.demoSpringSolr.dto.SearchDTO;
 import com.example.demoSpringSolr.entity.Product;
 import com.example.demoSpringSolr.repository.SolrProductRepository;
@@ -13,7 +11,6 @@ import com.example.demoSpringSolr.service.SearchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.solr.core.SolrTemplate;
@@ -23,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/Products")
+@RequestMapping("/search")
 public class SearchController {
 
     @Autowired
@@ -36,7 +33,7 @@ public class SearchController {
     private SearchService searchService;
 
     @PostMapping("/product")
-    public String createOrder(@RequestBody Product product) {
+    public String createProduct(@RequestBody Product product) {
 
         String description = "Product Created";
 
@@ -45,14 +42,7 @@ public class SearchController {
         return description;
 
     }
-//
-//    @GetMapping("/product/{productid}")
-//
-//    public Product readProduct(@PathVariable String productid) {
-//
-//        return solrProductRepository.findByProductId(productid);
-//
-//    }
+
 
 
     @PostMapping("/product/desc/")
@@ -98,27 +88,20 @@ public class SearchController {
     @GetMapping("/ratings/{rating}")
     public Page<Product> filterRatings(@PathVariable double rating) throws IOException, SolrServerException {
 
-//        Query query = new SimpleQuery(Criteria.where("Rating").is(rating));
-//        query.setRequestHandler("browser");
-//        query.addSort(Sort.by((Sort.Direction.DESC), "Weight"));
-//        return solrTemplat.query("Products_ver_9", query, Product.class);
-
         return searchService.filterRatings(rating);
 
     }
     @GetMapping("/attribute/{attribute}")
     public Page<Product> filterAttributes(@PathVariable String attribute){
-//        Query query = new SimpleQuery((Criteria.where("Attributes").is(attribute)));
-//        query.setRequestHandler("browser");
-//        return solrTemplat.query("Products_ver_9", query, Product.class);
 
         return searchService.filterAttributes(attribute);
     }
 
-    @PostMapping("/search/{term}")
-    public Page<Product> searchProducts(@RequestBody String term){
+    @PostMapping("/term/")
+    public List<Product> searchProduct(@RequestBody SearchDTO searchDTO){
 
-        return searchService.searchProducts(term);
+        String term = searchDTO.getTerm();
+        return searchService.searchProduct(term);
 
     }
 

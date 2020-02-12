@@ -12,4 +12,5 @@ public class PriceUpdateDTO {
 
     private String productId;
     private Double price;
+    private String merchantId;
 }

@@ -44,13 +44,14 @@
            <filter class="solr.LowerCaseFilterFactory"/>
            <filter class="solr.PatternReplaceFilterFactory" pattern="&amp;" replacement="and"/>
            <filter class="solr.PatternReplaceFilterFactory" pattern="[^\dA-Za-z ]" replacement=""/>
-           <filter class="solr.EdgeNGramFilterFactory" maxGramSize="20" minGramSize="1"/>
+           <filter class="solr.EdgeNGramFilterFactory" maxGramSize="20" minGramSize="3"/>
        </analyzer>
        <analyzer type="query">
            <tokenizer class="solr.StandardTokenizerFactory"/>
            <filter class="solr.LowerCaseFilterFactory"/>
            <filter class="solr.PatternReplaceFilterFactory" pattern="&amp;" replacement="and"/>
            <filter class="solr.PatternReplaceFilterFactory" pattern="[^\dA-Za-z ]" replacement=""/>
+           <filter class="solr.EdgeNGramFilterFactory" maxGramSize="20" minGramSize="3"/>
        </analyzer>
    </fieldType>
   <fieldType name="pint" class="solr.IntPointField" docValues="true"/>
@@ -75,19 +76,23 @@
   <field name="_root_" type="string" docValues="false" indexed="true" stored="false"/>
   <field name="_text_" type="text_general" multiValued="true" indexed="true" stored="false"/>
   <field name="_version_" type="plong" indexed="false" stored="false"/>
-  <field name="cid" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="CategoryID" type="text_general" multiValued="false" indexed="true" stored="true"/>
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
-  <field name="pdesc" type="text_general_ngram" multiValued="false" indexed="true" stored="true"/>
-  <field name="pid" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="pname" type="text_general_ngram" multiValued="false" indexed="true" stored="true"/>
-  <field name="prat" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="pusp" type="text_general" multiValued="false" indexed="true" stored="true"/>
-  <field name="pattr" type="text_general" multiValued="true" indexed="true" stored="true" docValues="false"/>
+  <field name="Description" type="text_general_ngram" multiValued="false" indexed="true" stored="true"/>
+  <field name="MerchantId" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="Name" type="text_general_ngram" multiValued="false" indexed="true" stored="true"/>
+  <field name="Rating" type="pdouble" multiValued="false" indexed="true" stored="true" docValues="true"/>
+  <field name="USP" type="text_general" multiValued="false" indexed="true" stored="true"/>
+  <field name="Attributes" type="text_general_ngram" multiValued="true" indexed="true" stored="true"/>
+  <field name="Price" type="pdouble" multiValued="false" indexed="true" stored="true"/>
+  <field name="Weight" type="pdouble" multiValued="false" indexed="true" stored="true"/>
 
-  <field name="autoComplete" type="text_general_ngram" indexed="true" stored="false" multiValued="true"/>
-    <copyField source="pusp" dest="autoComplete" />
-    <copyField source="pdesc" dest="autoComplete" />
-    <copyField source="pname" dest="autoComplete" />
+
+  <field name="autoComplete" type="text_general_ngram" indexed="true" stored="false" multiValued="true" uninvertible="false"/>
+    <copyField source="USP" dest="autoComplete" />
+    <copyField source="Name" dest="autoComplete" />
+    <copyField source="Attributes" dest="autoComplete" />
+    <copyField source="CategoryID" dest="autoComplete" />
 
 
 </schema>

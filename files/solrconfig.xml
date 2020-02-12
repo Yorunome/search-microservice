@@ -675,8 +675,8 @@
     -->
     <requestHandler name="/browser" class="solr.SearchHandler">
     <lst name="defaults">
-      <str name="qf">pname^10 pdesc^10 pattr^10 psup^10</str>
-      <str name="df">pdesc</str>
+      <str name="qf">Name^10 Description^2 Attributes^7 USP^7 CategoryID^6 Price^6 Weight^9</str>
+      <!-- <str name="df">pdesc</str> -->
       <str name="wt">json</str>
     </lst>
   </requestHandler>

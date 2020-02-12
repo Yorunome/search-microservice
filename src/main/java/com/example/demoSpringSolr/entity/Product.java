@@ -12,7 +12,7 @@ import org.springframework.data.solr.core.mapping.SolrDocument;
 import java.io.Serializable;
 import java.util.List;
 
-@SolrDocument(solrCoreName = "Products_ver_11")
+@SolrDocument(solrCoreName = "Products_ver_14")
 @Getter
 @ToString
 @Setter
@@ -22,6 +22,9 @@ public class Product implements Serializable{
     @Indexed(name = "id", type = "string")
 
     private String productId;
+
+    @Indexed(name = "MerchantId", type = "string")
+    private String merchantId;
 
     @Indexed(name = "Name", type = "string")
 

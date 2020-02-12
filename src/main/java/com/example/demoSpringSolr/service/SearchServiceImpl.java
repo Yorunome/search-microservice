@@ -5,7 +5,11 @@ import com.example.demoSpringSolr.entity.Product;
 import com.example.demoSpringSolr.repository.SolrProductRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +23,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,20 +36,27 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     SolrTemplate solrTemplat;
 
+    @Autowired
+    SolrClient solrClient;
+
     @Override
-    public Page<Product> searchProducts(String term) {
-        Query query = new SimpleQuery(Criteria.where("autoComplete").is(term));
-        //query.setRequestHandler("browser");
+    public List<Product> searchProduct(String term) {
+        String[] searchTerms = term.split(" ");
+        Query query = new SimpleQuery();
+//        query.setRequestHandler("browser");
+        for (String terms:searchTerms) {
+            query.addCriteria(Criteria.where("autoComplete").is(terms));
+        }
         query.addSort(sortByWeight());
-        return solrTemplat.query("Products_ver_11", query, Product.class);
+        return solrTemplat.query("Products_ver_14", query, Product.class).getContent();
     }
 
     @Override
     public void updateProduct(String productId, Double price) {
         PartialUpdate update = new PartialUpdate("id", productId);
         update.setValueOfField("Price", price);
-        solrTemplat.saveBean("Products_ver_11",update);
-        solrTemplat.commit("Products_ver_11");
+        solrTemplat.saveBean("Products_ver_14",update);
+        solrTemplat.commit("Products_ver_14");
     }
 
     @Override
@@ -62,6 +72,8 @@ public class SearchServiceImpl implements SearchService {
     private Sort sortByWeight(){
         return Sort.by(Sort.Direction.DESC, "Weight");
     }
+
+    private Sort sortByName(){ return Sort.by(Sort.Direction.ASC, "Name");}
 
 
     @KafkaListener(topics = "Products", groupId = "group_id")
@@ -87,7 +99,27 @@ public class SearchServiceImpl implements SearchService {
         Query query = new SimpleQuery(Criteria.where("Rating").is(rating));
         query.setRequestHandler("browser");
         query.addSort(Sort.by((Sort.Direction.DESC), "Weight"));
-        return solrTemplat.query("Products_ver_11", query, Product.class);
+        return solrTemplat.query("Products_ver_14", query, Product.class);
+
+//        SolrQuery query = new SolrQuery();
+//        query.addFacetField("Rating");
+//
+//        QueryResponse response = null;
+//        try {
+//            response = solrClient.query(query);
+//        } catch (SolrServerException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        List<FacetField.Count> facetResults = response.getFacetField("category").getValues();
+//        try {
+//            return solrClient.query("Products_ver_11", query);
+//        } catch (SolrServerException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -95,7 +127,7 @@ public class SearchServiceImpl implements SearchService {
     public Page<Product> filterAttributes(@PathVariable String attribute){
         Query query = new SimpleQuery((Criteria.where("Attributes").is(attribute)));
         query.setRequestHandler("browser");
-        return solrTemplat.query("Products_ver_11", query, Product.class);
+        return solrTemplat.query("Products_ver_14", query, Product.class);
     }
 
 
